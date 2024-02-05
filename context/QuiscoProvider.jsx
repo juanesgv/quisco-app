@@ -21,6 +21,11 @@ const QuiscoProvider = ({children}) =>{
         obtenerCategorias()
     }, [])
 
+    useEffect(() => {
+        setCategoriaActual(categorias[0])
+        console.log(categoriaActual)
+    }, [categorias])
+
     const handleClickCategoria = (id) =>{
         const categoriaClic =  categorias.filter(c => c.id === id)
         setCategoriaActual(categoriaClic[0])
