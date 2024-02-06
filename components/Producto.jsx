@@ -2,10 +2,12 @@ import React from 'react'
 import Image from 'next/image'
 import { formatearDinero } from '@/helpers'
 export {formatearDinero} from '@/helpers'
+import useQuisco from '@/hooks/useQuisco'
 
 const Producto = ({ producto }) => {
 
     const { nombre, imagen, precio } = producto
+    const {handleSetProducto, handleChangeModal} = useQuisco()
 
     return (
         <div className='border p-3 '>
@@ -23,6 +25,17 @@ const Producto = ({ producto }) => {
                         formatearDinero(precio)
                     }                
                 </p>
+
+                <button
+                    type='button'
+                    className='bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold'
+                    onClick={() => {
+                        handleChangeModal()
+                        handleSetProducto(producto)
+                    }}
+                >
+                    Agregar 
+                </button>
             </div>
         </div>
     )

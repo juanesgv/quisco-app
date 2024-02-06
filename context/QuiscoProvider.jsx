@@ -7,6 +7,9 @@ const QuiscoProvider = ({children}) =>{
 
     const [categorias, setCategorias] = useState([])
     const [categoriaActual, setCategoriaActual] = useState({})
+    const [producto, setProducto] = useState({})
+    const [modal, setModal] = useState(false)
+    const [pedido, setPedido] = useState([])
 
     const obtenerCategorias = async () => {
         try {
@@ -16,6 +19,13 @@ const QuiscoProvider = ({children}) =>{
             console.log(error)
         }
     }
+
+    const handleSetProducto = producto => {
+        setProducto(producto)
+    }
+    const handleChangeModal = () => {
+        setModal(!modal)
+    }
     
     useEffect(()=>{
         obtenerCategorias()
@@ -23,12 +33,23 @@ const QuiscoProvider = ({children}) =>{
 
     useEffect(() => {
         setCategoriaActual(categorias[0])
-        console.log(categoriaActual)
     }, [categorias])
 
     const handleClickCategoria = (id) =>{
         const categoriaClic =  categorias.filter(c => c.id === id)
         setCategoriaActual(categoriaClic[0])
+    }
+
+    const handleAgregarPedido = ({categoriaId, imagen, ...producto}) => { //remueve categoria e imagen del objeto producto
+
+        if(pedido.some(productostate => productostate.id  === producto.id)){
+            const pedidoActualizado = pedido.map(productostate => productostate.id === producto.id ? producto : productostate)
+            setPedido(pedidoActualizado)
+        }else{
+            setPedido([...pedido, producto]) //Hago una copia de pedido actualmente y agrego el producto que me llega desde la función
+        }
+
+        setModal(false)
     }
 
     return(
@@ -37,6 +58,12 @@ const QuiscoProvider = ({children}) =>{
                 categorias,
                 handleClickCategoria,
                 categoriaActual,
+                producto,
+                handleSetProducto,
+                handleChangeModal,
+                modal,
+                pedido,
+                handleAgregarPedido
             }}
         >
             {children}
