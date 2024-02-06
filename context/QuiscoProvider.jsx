@@ -41,7 +41,7 @@ const QuiscoProvider = ({children}) =>{
         setCategoriaActual(categoriaClic[0])
     }
 
-    const handleAgregarPedido = ({categoriaId, imagen, ...producto}) => { //remueve categoria e imagen del objeto producto
+    const handleAgregarPedido = ({categoriaId, ...producto}) => { //remueve categoria e imagen del objeto producto
 
         if(pedido.some(productostate => productostate.id  === producto.id)){
             const pedidoActualizado = pedido.map(productostate => productostate.id === producto.id ? producto : productostate)
