@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 import {toast} from 'react-toastify'
+import { useRouter } from "next/router";
 
 const QuiscoContext = createContext()
 
@@ -11,6 +12,8 @@ const QuiscoProvider = ({children}) =>{
     const [producto, setProducto] = useState({})
     const [modal, setModal] = useState(false)
     const [pedido, setPedido] = useState([])
+
+    const router = useRouter()
 
     const obtenerCategorias = async () => {
         try {
@@ -39,9 +42,10 @@ const QuiscoProvider = ({children}) =>{
     const handleClickCategoria = (id) =>{
         const categoriaClic =  categorias.filter(c => c.id === id)
         setCategoriaActual(categoriaClic[0])
+        router.push('/')
     }
 
-    const handleAgregarPedido = ({categoriaId, ...producto}) => { //remueve categoria e imagen del objeto producto
+    const handleAgregarPedido = ({categoriaId, ...producto}) => { //remueve categoria del objeto producto
 
         if(pedido.some(productostate => productostate.id  === producto.id)){
             const pedidoActualizado = pedido.map(productostate => productostate.id === producto.id ? producto : productostate)
@@ -53,6 +57,17 @@ const QuiscoProvider = ({children}) =>{
         }
 
         setModal(false)
+    }
+
+    const handleEditarCantidad = id => {
+        const productoActualizar = pedido.filter(producto => producto.id === id)
+        setProducto(productoActualizar[0])
+        setModal(!modal)
+    }
+
+    const handleEliminarProducto = id => {
+        const pedidoActualizado = pedido.filter(producto => producto.id !== id) //Saca el producto del objeto (solamente filtra a los ids diferentes)
+        setPedido(pedidoActualizado)
     }
 
 
@@ -68,6 +83,8 @@ const QuiscoProvider = ({children}) =>{
                 modal,
                 pedido,
                 handleAgregarPedido,
+                handleEditarCantidad,
+                handleEliminarProducto
             }}
         >
             {children}

@@ -13,7 +13,7 @@ export default function Resumen(){
                 <p className="text-center text-2xl">No hay elementos en tu pedido</p>
             ): (
                 pedido.map(p =>(
-                    <ResumenProducto key={p.id} producto={p}/>
+                    <ResumenProducto key={p.id} productoPedido={p}/>
                 ))
             )}
         </Layout>
